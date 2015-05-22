@@ -37,7 +37,7 @@ public abstract class AbstractClaimBuildAction<T extends Saveable> extends Descr
     private String assignedBy;
     private Date claimDate;
     private boolean transientClaim = !ClaimConfig.get().isStickyByDefault();
-
+    private boolean visible = ClaimConfig.get().isVisibleByDefault();
     protected T owner;
 
     AbstractClaimBuildAction(T owner) {
@@ -74,8 +74,9 @@ public abstract class AbstractClaimBuildAction<T extends Saveable> extends Descr
         }
         String reason = req.getSubmittedForm().getString("reason");
         boolean sticky = req.getSubmittedForm().getBoolean("sticky");
+        boolean visible = req.getSubmittedForm().getBoolean("visible");
         if (StringUtils.isEmpty(reason)) reason = null;
-        claim(name, reason, currentUser, sticky);
+        claim(name, reason, currentUser, sticky,visible);
         try {
             ClaimEmailer.sendEmailIfConfigured(User.get(name, false, Collections.EMPTY_MAP), currentUser, owner.toString(), reason, getUrl());
         } catch (MessagingException e) {
@@ -138,11 +139,12 @@ public abstract class AbstractClaimBuildAction<T extends Saveable> extends Descr
         return claimed;
     }
 
-    public void claim(String claimedBy, String reason, String assignedBy, boolean sticky) {
+    public void claim(String claimedBy, String reason, String assignedBy, boolean sticky,boolean visible) {
         this.claimed = true;
         this.claimedBy = claimedBy;
         this.reason = reason;
         this.transientClaim = !sticky;
+		this.visible = visible;
         this.claimDate = new Date();
         this.assignedBy = assignedBy;
     }
@@ -151,7 +153,7 @@ public abstract class AbstractClaimBuildAction<T extends Saveable> extends Descr
      * Claim a new Run with the same settings as this one.
      */
     public void copyTo(AbstractClaimBuildAction<T> other) {
-        other.claim(getClaimedBy(), getReason(), getAssignedBy(), isSticky());
+        other.claim(getClaimedBy(), getReason(), getAssignedBy(), isSticky(), isVisible());
     }
 
     public void unclaim() {
@@ -204,9 +206,17 @@ public abstract class AbstractClaimBuildAction<T extends Saveable> extends Descr
     public boolean isSticky() {
         return !transientClaim;
     }
+	
+    public boolean isVisible() {
+        return visible;
+    }	
 
     public void setSticky(boolean sticky) {
         this.transientClaim = !sticky;
+    }
+	
+	public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     @Exported

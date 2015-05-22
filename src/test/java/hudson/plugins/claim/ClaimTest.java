@@ -162,13 +162,13 @@ public class ClaimTest {
 
     private ClaimBuildAction givenBuildClaimedByOtherUser() {
         ClaimBuildAction action = build.getAction(ClaimBuildAction.class);
-        action.claim("user2", "reason", "user1", true);
+        action.claim("user2", "reason", "user1", true, false);
         return action;
     }
 
     private ClaimBuildAction givenBuildClaimedByCurrentUser() {
         ClaimBuildAction action = build.getAction(ClaimBuildAction.class);
-        action.claim("user1", "reason", "user1", true);
+        action.claim("user1", "reason", "user1", true, false);
         return action;
     }
 

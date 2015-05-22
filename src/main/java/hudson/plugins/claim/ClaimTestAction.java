@@ -16,8 +16,8 @@ public class ClaimTestAction extends AbstractClaimBuildAction<Data> {
     }
 
     @Override
-    public void claim(String claimedBy, String reason, String assignedBy, boolean sticky) {
-        super.claim(claimedBy, reason, assignedBy, sticky);
+    public void claim(String claimedBy, String reason, String assignedBy, boolean sticky,boolean visible) {
+        super.claim(claimedBy, reason, assignedBy, sticky, visible);
         owner.addClaim(testObjectId, this);
     }
 

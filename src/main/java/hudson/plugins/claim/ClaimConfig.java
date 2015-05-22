@@ -22,6 +22,11 @@ public class ClaimConfig extends GlobalConfiguration {
      * Default global value for the stickiness of the build claims.
      */
     private boolean stickyByDefault = true;
+	
+    /**
+     * Default global value for the visibility of the claimed build reason.
+     */
+    private boolean visibleByDefault = false;	
 
     /**
      * Groovy script to be run when a claim is changed.
@@ -41,6 +46,7 @@ public class ClaimConfig extends GlobalConfiguration {
         // set that to properties and call save().
         sendEmails = formData.getBoolean("sendEmails");
         stickyByDefault = formData.getBoolean("stickyByDefault");
+        visibleByDefault = formData.getBoolean("visibleByDefault");
         groovyScript = formData.getString("groovyScript");
         save();
         return super.configure(req,formData);
@@ -70,6 +76,15 @@ public class ClaimConfig extends GlobalConfiguration {
     public boolean isStickyByDefault() {
 	return stickyByDefault;
     }
+	
+    /**
+     * Returns true if the claims should be visible by default, false otherwise.
+     * 
+     * @return true to make claims visible by default, else false.
+     */
+    public boolean isVisibleByDefault() {
+	return visibleByDefault;
+    }	
 
     /**
      * Sets the default stickiness behaviour for build claims.
@@ -80,6 +95,17 @@ public class ClaimConfig extends GlobalConfiguration {
     public void setStickyByDefault(boolean stickyByDefault) {
 	this.stickyByDefault = stickyByDefault;
     }
+	
+    /**
+     * Sets the default stickiness behaviour for build claims.
+     * 
+     * @param stickyByDefault
+     *            the default stickiness value.
+     */
+    public void setVisibleByDefault(boolean visibleByDefault) {
+	this.visibleByDefault = visibleByDefault;
+    }
+	
 
     /**
      * This method returns the Groovy script as a String

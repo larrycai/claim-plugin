@@ -2,6 +2,9 @@
 		<j:if test="${it.claimed}">
 		<j:choose>
 			<j:when test="${it.reason != null}">
+				<j:if test="${it.visible}">
+				  <span style="padding:1px;border:0px solid white;margin:0px;background:orange;color:white">${it.reason}</span>
+				</j:if>
 			<img width="16" height="16"
 			  title="${%claimed.reason(it.claimedByName,it.reason)}"
 			  src="${imagesURL}/16x16/lock.gif"/>
